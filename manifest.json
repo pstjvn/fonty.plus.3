@@ -1,0 +1,7 @@
+{
+  "name": "fonty.plus",
+  "short_name": "fonty.plus",
+  "description": "Fonty set of utilities and web views",
+  "start_url": "/",
+  "display": "standalone"
+}
