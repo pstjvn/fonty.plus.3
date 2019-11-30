@@ -6,6 +6,12 @@
     <title>fonty.plus</title>
     <meta name="description" content="Fonty set of utilities and web views">
     <style>
+      :root {
+        --primary-bg: #f7f7f7;
+        --primary-fg: #737373;
+        --secondary-bg: #ffffff;
+        --secondary-fg: #cccccc;
+      }
       html, body {
         width: 100vw;
         height: 100vh;
@@ -13,7 +19,8 @@
         padding: 0;
       }
       body {
-        background-color: black;
+        background-color: var(--primary-bg);
+        color: var(--primary-fg);
       }
     </style>
   </head>

@@ -1,22 +1,13 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+import '@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {IronMenuBehavior} from '@polymer/iron-menu-behavior/iron-menu-behavior.js';
+import {
+  IronMenuBehavior
+} from '@polymer/iron-menu-behavior/iron-menu-behavior.js';
 
-export class NavList extends mixinBehaviors(IronMenuBehavior, PolymerElement) {
-  static get is() { return 'nav-list'; }
-  static get template() {
-    return html`<slot></slot>`;
-  }
-  static get properties() {
-    return {
-      role: {
-        value: 'tablist',
-        type: String,
-        reflectToAttribute: true
-      }
-    }
-  }
-}
-customElements.define(NavList.is, NavList);
-
+Polymer({
+  is: 'nav-list',
+  _template: html `<slot></slot>`,
+  hostAttributes: {role: 'tablist'},
+  behaviors: [IronMenuBehavior]
+});

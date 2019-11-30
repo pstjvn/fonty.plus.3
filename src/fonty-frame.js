@@ -1,6 +1,6 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '@polymer/polymer/lib/utils/async.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {Debouncer} from '@polymer/polymer/lib/utils/debounce.js';
+import {timeOut} from '@polymer/polymer/lib/utils/async.js';
 
 /**
  * The events our frame produces for outside consumers.
@@ -29,7 +29,6 @@ export class FontyFrame extends PolymerElement {
           display: flex;
           width: 100%;
           height: 100%;
-          background-color: green;
         }
         iframe {
           border: none;
@@ -59,15 +58,9 @@ export class FontyFrame extends PolymerElement {
        * The number of milliseconds to wait for the load event from the iframe
        * before considering the load as unsuccessful/timed out.
        */
-      timeout: {
-        type: Number,
-        value: 30000
-      },
+      timeout: {type: Number, value: 30000},
       /** The URL to load in the iframe to visualize for the user. */
-      src: {
-        type: String,
-        observer: '__onSrcChanged'
-      },
+      src: {type: String, observer: '__onSrcChanged'},
       /**
        * List of URLs to disable the blocking of popups from.
        * This is needed in order to allow the ads (carbon) to work properly.
@@ -115,22 +108,19 @@ export class FontyFrame extends PolymerElement {
      * before the specified time out).
      * @type {function(this: FontyFrame): void}
      */
-    this.__boundFontyFrameLoadTimeout = (function() {
-      this.fire('fonty-frame-load-timeout')
-    }).bind(this);
-    this.__boundFontyFrameFontLoadError = (function() {
-      this.fire('fonty-frame-font-load-error');
-    }).bind(this);
-    this.__boundFontyFrameFontLoadSuccess = (function() {
-      this.fire('fonty-frame-font-load-success');
-    }).bind(this);
+    this.__boundFontyFrameLoadTimeout =
+        (function() { this.fire('fonty-frame-load-timeout') }).bind(this);
+    this.__boundFontyFrameFontLoadError =
+        (function() { this.fire('fonty-frame-font-load-error'); }).bind(this);
+    this.__boundFontyFrameFontLoadSuccess =
+        (function() { this.fire('fonty-frame-font-load-success'); }).bind(this);
     /**
      * The bound message handler. We need this as we are using native
      * listeners.
      * @type {function(e: MessageEvent, this: FontyFrame): void}
      * @private
      */
-    this.__boundMessageHandler =  this.__onMessage.bind(this);
+    this.__boundMessageHandler = this.__onMessage.bind(this);
   }
 
   /**
@@ -142,12 +132,10 @@ export class FontyFrame extends PolymerElement {
    */
   postMessage(font, forElement) {
     if (this.__win) {
-      this.__win.postMessage({
-        applyTo: forElement,
-        font
-      });
+      this.__win.postMessage({applyTo: forElement, font});
     } else {
-      console.warn('Posting font config message, but iframe window is not ready');
+      console.warn(
+          'Posting font config message, but iframe window is not ready');
     }
   }
 
@@ -187,7 +175,8 @@ export class FontyFrame extends PolymerElement {
     if (this.__timeoutHandle !== null) {
       timeOut.cancel(this.__timeoutHandle);
     }
-    this.__timeoutHandle = timeOut.run(this.__boundFontyFrameLoadTimeout, this.timeout);
+    this.__timeoutHandle =
+        timeOut.run(this.__boundFontyFrameLoadTimeout, this.timeout);
   }
 
   /**
@@ -197,8 +186,10 @@ export class FontyFrame extends PolymerElement {
    * @param {string} targetUrl
    */
   __setSandboxAttriute(targetUrl) {
-    let allowPopups = this.allowPopupUrlList.some(url => targetUrl.includes(url));
-    this.$.fontyframe.setAttribute('sandbox',
+    let allowPopups =
+        this.allowPopupUrlList.some(url => targetUrl.includes(url));
+    this.$.fontyframe.setAttribute(
+        'sandbox',
         `allow-same-origin allow-scripts ${(allowPopups ? ' allow-popups' : '')}`);
   }
 
@@ -213,13 +204,11 @@ export class FontyFrame extends PolymerElement {
     if (data.error) {
       this.__debouncerFireFontApplicationStatusUpdate = Debouncer.debounce(
           this.__debouncerFireFontApplicationStatusUpdate,
-          this.__debouncerDelay,
-          this.__boundFontyFrameFontLoadError);
+          this.__debouncerDelay, this.__boundFontyFrameFontLoadError);
     } else if (data.complete) {
       this.__debouncerFireFontApplicationStatusUpdate = Debouncer.debounce(
           this.__debouncerFireFontApplicationStatusUpdate,
-          this.__debouncerDelay,
-          this.__boundFontyFrameFontLoadSuccess);
+          this.__debouncerDelay, this.__boundFontyFrameFontLoadSuccess);
     } else {
       console.error('Unhandled message from iframe:', e);
     }
